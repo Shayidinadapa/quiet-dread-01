@@ -6,7 +6,7 @@ const TEXT =
 
 function main(): void {
   const outDir =
-    process.env.MAKEFUN_OUTPUT_DIR ?? process.env.OUTPUT_DIR ?? "/output";
+    process.env.MAKEFUN_OUTPUT_DIR || process.env.OUTPUT_DIR || "/output";
   if (outDir === ".") {
     throw new Error("Refusing to write into the current directory.");
   }
@@ -17,6 +17,9 @@ function main(): void {
   }
   if (TEXT.trim().length === 0) {
     throw new Error("Entry must not be whitespace-only.");
+  }
+  if (TEXT !== TEXT.trim()) {
+    throw new Error("Entry must not have leading or trailing whitespace.");
   }
   if (TEXT.includes("\n") || TEXT.includes("\r")) {
     throw new Error("Entry must be a single line.");
